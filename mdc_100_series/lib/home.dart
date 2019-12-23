@@ -18,7 +18,6 @@ import 'model/products_repository.dart';
 import 'model/product.dart';
 
 class HomePage extends StatelessWidget {
-  // TODO: Make a collection of cards (102)
   List<Card> _buildGridCards(BuildContext context) {
     List<Product> products = ProductsRepository.loadProducts(Category.all);
 
@@ -81,8 +80,6 @@ class HomePage extends StatelessWidget {
     // TODO: Return an AsymmetricView (104)
     // TODO: Pass Category variable to AsymmetricView (104)
     return Scaffold(
-      // TODO: Add app bar (102)
-      // TODO: Add a grid view (102)
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(
@@ -120,7 +117,6 @@ class HomePage extends StatelessWidget {
         childAspectRatio: 8.0 / 9.0,
         children: _buildGridCards(context),
       ),
-      // TODO: Set resizeToAvoidBottomInset (101)
       resizeToAvoidBottomInset: true,
     );
   }
