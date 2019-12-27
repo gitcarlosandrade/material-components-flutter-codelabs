@@ -32,6 +32,15 @@ class _BackdropState extends State<Backdrop>
   final GlobalKey _backdropKey = GlobalKey(debugLabel: 'Backdrop');
   AnimationController _controller;
 
+  @override
+  void didUpdateWidget(Backdrop oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.currentCategory != oldWidget.currentCategory)
+      _toggleBackdropLayerVisibility();
+    else if (!_frontLayerVisible) _controller.fling(velocity: _kFlingVelocity);
+  }
+
   Widget _buildStack(BuildContext context, BoxConstraints constraints) {
     const double layerTitleHeight = 48.0;
     final Size layerSize = constraints.biggest;
@@ -51,11 +60,10 @@ class _BackdropState extends State<Backdrop>
           child: widget.backLayer,
           excluding: _frontLayerVisible,
         ),
-        // TODO: Add a PositionedTransition (104)
         PositionedTransition(
           rect: layerAnimation,
           child: _FrontLayer(
-            // TODO: Implement onTap property on _BackdropState (104)
+            onTap: _toggleBackdropLayerVisibility,
             child: widget.frontLayer,
           ),
         ),
@@ -82,7 +90,6 @@ class _BackdropState extends State<Backdrop>
       brightness: Brightness.light,
       elevation: 0.0,
       titleSpacing: 0.0,
-      // TODO: Replace leading menu icon with IconButton (104)
       // TODO: Remove leading property (104)
       // TODO: Create title with _BackdropTitle parameter (104)
       leading: IconButton(
@@ -114,7 +121,6 @@ class _BackdropState extends State<Backdrop>
     );
     return Scaffold(
       appBar: appBar,
-      // TODO: Return a LayoutBuilder widget (104)
       body: LayoutBuilder(builder: _buildStack),
     );
   }
@@ -132,12 +138,13 @@ class _BackdropState extends State<Backdrop>
 }
 
 class _FrontLayer extends StatelessWidget {
-  // TODO: Add on-tap callback (104)
   const _FrontLayer({
     Key key,
+    this.onTap,
     this.child,
   }) : super(key: key);
 
+  final VoidCallback onTap;
   final Widget child;
 
   @override
@@ -150,7 +157,13 @@ class _FrontLayer extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          // TODO: Add a GestureDetector (104)
+          GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: onTap,
+              child: Container(
+                height: 40.0,
+                alignment: AlignmentDirectional.centerStart,
+              )),
           Expanded(
             child: child,
           ),
